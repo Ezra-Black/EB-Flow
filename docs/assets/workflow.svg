@@ -1,94 +1,170 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-labelledby="title desc">
-  <title id="title">EBFlow workflow</title>
-  <desc id="desc">Compact status-machine loop: pending through completed with validation, apply, and loop control.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 980" role="img" aria-labelledby="title desc">
+  <title id="title">EBFlow production multi-agent workflow</title>
+  <desc id="desc">Detailed Railway/DB feedback loop with status machine, route layer, idempotent validation, apply handoff, custom context, history report, failure paths, and loop control.</desc>
+
   <defs>
-    <pattern id="grid" width="16" height="16" patternUnits="userSpaceOnUse">
-      <path d="M16 0H0V16" fill="none" stroke="#4a6a5d" stroke-opacity="0.28" stroke-width="0.5"/>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M20 0H0V20" fill="none" stroke="#4a6a5d" stroke-opacity="0.22" stroke-width="0.6"/>
     </pattern>
-    <marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-      <path d="M0 0L6 3L0 6Z" fill="#4a6a5d"/>
+    <marker id="arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0L7 3.5L0 7Z" fill="#4a6a5d"/>
     </marker>
-    <marker id="arrow-accent" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-      <path d="M0 0L6 3L0 6Z" fill="#e85d04"/>
+    <marker id="arrow-accent" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0L7 3.5L0 7Z" fill="#e85d04"/>
     </marker>
+    <marker id="arrow-ok" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0L7 3.5L0 7Z" fill="#4a8c5c"/>
+    </marker>
+    <marker id="arrow-fail" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0L7 3.5L0 7Z" fill="#e85d04"/>
+    </marker>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="1.2" result="b"/>
+      <feMerge>
+        <feMergeNode in="b"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
   </defs>
 
-  <rect width="640" height="360" fill="#0a1612"/>
-  <rect width="640" height="360" fill="url(#grid)"/>
-  <rect x="1" y="1" width="638" height="358" fill="none" stroke="#4a6a5d" stroke-opacity="0.55"/>
+  <!-- canvas -->
+  <rect width="1100" height="980" fill="#0a1612"/>
+  <rect width="1100" height="980" fill="url(#grid)"/>
+  <rect x="1" y="1" width="1098" height="978" fill="none" stroke="#4a6a5d" stroke-opacity="0.5"/>
 
-  <text x="16" y="22" fill="#e85d04" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10" letter-spacing="1.5">EBFLOW // LOOP CONTROL</text>
-  <text x="624" y="22" text-anchor="end" fill="#4a6a5d" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="9">v + status + debounce</text>
+  <!-- header -->
+  <text x="28" y="34" fill="#e85d04" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="13" letter-spacing="1.8">EBFLOW // PRODUCTION MULTI-AGENT WORKFLOW</text>
+  <text x="28" y="54" fill="#8fb3a5" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="11">Railway / DB feedback loop with safeguards</text>
 
-  <g font-family="IBM Plex Mono, ui-monospace, monospace">
-    <rect x="16" y="40" width="140" height="44" fill="#0f1f1a" stroke="#3a7a8c" stroke-width="1.25"/>
-    <text x="26" y="58" fill="#3a7a8c" font-size="8">01 MAIN</text>
-    <text x="26" y="72" fill="#8fb3a5" font-size="10">Task / Domain</text>
+  <!-- status machine -->
+  <rect x="690" y="18" width="390" height="52" fill="#0f1f1a" stroke="#d4a017" stroke-width="1.25"/>
+  <text x="704" y="38" fill="#d4a017" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10">STATUS MACHINE</text>
+  <text x="704" y="56" fill="#c5ddd2" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="11">pending -&gt; processing -&gt; validated -&gt; applied -&gt; completed</text>
 
-    <line x1="156" y1="62" x2="178" y2="62" stroke="#4a6a5d" marker-end="url(#arrow)"/>
+  <!-- 1 Main Agent -->
+  <rect x="360" y="90" width="380" height="58" fill="#0f1f1a" stroke="#3a7a8c" stroke-width="1.5"/>
+  <text x="374" y="112" fill="#3a7a8c" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10">01 MAIN AGENT</text>
+  <text x="374" y="132" fill="#c5ddd2" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="13">Receives Task / Domain / Project</text>
 
-    <rect x="184" y="40" width="140" height="44" fill="#0f1f1a" stroke="#4a8c5c" stroke-width="1.25"/>
-    <text x="194" y="58" fill="#4a8c5c" font-size="8">02 ENTRY</text>
-    <text x="194" y="72" fill="#8fb3a5" font-size="10">Users / Website</text>
+  <path d="M360 119 H280" fill="none" stroke="#4a6a5d" marker-end="url(#arrow)"/>
+  <path d="M740 119 H820 V170" fill="none" stroke="#4a6a5d" marker-end="url(#arrow)"/>
 
-    <line x1="324" y1="62" x2="346" y2="62" stroke="#4a6a5d" marker-end="url(#arrow)"/>
+  <!-- left: users + db write -->
+  <rect x="28" y="170" width="300" height="52" fill="#0f1f1a" stroke="#4a8c5c" stroke-width="1.35"/>
+  <text x="42" y="191" fill="#4a8c5c" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10">02 USERS</text>
+  <text x="42" y="209" fill="#c5ddd2" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="12">Interact with website / make requests</text>
 
-    <rect x="352" y="40" width="140" height="44" fill="#0f1f1a" stroke="#d4a017" stroke-width="1.25"/>
-    <text x="362" y="58" fill="#d4a017" font-size="8">03 DB WRITE</text>
-    <text x="362" y="72" fill="#8fb3a5" font-size="10">pending + version</text>
+  <path d="M178 222 V238" fill="none" stroke="#4a6a5d" marker-end="url(#arrow)"/>
 
-    <line x1="492" y1="62" x2="514" y2="62" stroke="#4a6a5d" marker-end="url(#arrow)"/>
+  <rect x="28" y="242" width="300" height="64" fill="#0f1f1a" stroke="#4a8c5c" stroke-width="1.35"/>
+  <text x="42" y="263" fill="#4a8c5c" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10">03 DB WRITE</text>
+  <text x="42" y="281" fill="#c5ddd2" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="12">Update Railway + Database</text>
+  <text x="42" y="297" fill="#d4a017" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="11">status = pending + version</text>
 
-    <rect x="520" y="40" width="104" height="44" fill="#0f1f1a" stroke="#8a5a8a" stroke-width="1.25"/>
-    <text x="530" y="58" fill="#8a5a8a" font-size="8">04 EVENT</text>
-    <text x="530" y="72" fill="#8fb3a5" font-size="10">wake agent</text>
-  </g>
+  <path d="M328 274 H390" fill="none" stroke="#4a6a5d" marker-end="url(#arrow)"/>
+  <text x="332" y="266" fill="#4a6a5d" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="9">Railway notifies / DB event</text>
 
-  <path d="M572 84 V110 H320 V120" fill="none" stroke="#4a6a5d" marker-end="url(#arrow)"/>
+  <!-- center: ingress -->
+  <rect x="390" y="250" width="320" height="64" fill="#0f1f1a" stroke="#8a5a8a" stroke-width="1.5"/>
+  <text x="404" y="271" fill="#8a5a8a" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10">04 SUB-AGENT (INGRESS)</text>
+  <text x="404" y="289" fill="#c5ddd2" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="12">Receives change</text>
+  <text x="404" y="305" fill="#8fb3a5" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="11">checks version + status (+ debounce)</text>
 
-  <g font-family="IBM Plex Mono, ui-monospace, monospace">
-    <rect x="200" y="120" width="240" height="44" fill="#0f1f1a" stroke="#8a5a8a" stroke-width="1.25"/>
-    <text x="210" y="138" fill="#8a5a8a" font-size="8">05 INGRESS GUARD</text>
-    <text x="210" y="152" fill="#8fb3a5" font-size="10">check version + status + lock</text>
+  <path d="M550 314 V340" fill="none" stroke="#4a6a5d" marker-end="url(#arrow)"/>
 
-    <line x1="320" y1="164" x2="320" y2="182" stroke="#4a6a5d" marker-end="url(#arrow)"/>
+  <!-- route diamond -->
+  <path d="M550 348 L670 398 L550 448 L430 398 Z" fill="#0f1f1a" stroke="#e85d04" stroke-width="1.5"/>
+  <text x="550" y="390" text-anchor="middle" fill="#e85d04" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10">05 ROUTE LAYER</text>
+  <text x="550" y="408" text-anchor="middle" fill="#c5ddd2" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="11">CRUD system</text>
+  <text x="550" y="424" text-anchor="middle" fill="#c5ddd2" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="11">or API layer?</text>
 
-    <rect x="214" y="186" width="212" height="40" fill="#0f1f1a" stroke="#e85d04" stroke-width="1.25"/>
-    <text x="224" y="202" fill="#e85d04" font-size="8">06 ROUTE</text>
-    <text x="224" y="216" fill="#8fb3a5" font-size="10">CRUD system  |  API layer</text>
-  </g>
+  <!-- fail from route -->
+  <path d="M670 398 H760" fill="none" stroke="#e85d04" marker-end="url(#arrow-fail)"/>
+  <text x="690" y="390" fill="#e85d04" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="9">FAIL</text>
 
-  <path d="M260 226 V242 H120 V250" fill="none" stroke="#4a6a5d" marker-end="url(#arrow)"/>
-  <path d="M380 226 V242 H520 V250" fill="none" stroke="#4a6a5d" marker-end="url(#arrow)"/>
+  <rect x="760" y="348" width="312" height="78" fill="#140c0a" stroke="#e85d04" stroke-width="1.35"/>
+  <text x="774" y="370" fill="#e85d04" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10">VALIDATION FAILED</text>
+  <text x="774" y="390" fill="#c5ddd2" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="11">write failed record</text>
+  <text x="774" y="408" fill="#8fb3a5" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="11">retry with backoff OR escalate to human</text>
 
-  <g font-family="IBM Plex Mono, ui-monospace, monospace">
-    <rect x="40" y="250" width="160" height="44" fill="#0f1f1a" stroke="#4a8c5c" stroke-width="1.25"/>
-    <text x="50" y="268" fill="#4a8c5c" font-size="8">07 VALIDATE</text>
-    <text x="50" y="282" fill="#8fb3a5" font-size="10">idempotent check</text>
+  <!-- idempotency note -->
+  <rect x="760" y="250" width="312" height="44" fill="#0f1f1a" stroke="#4a6a5d" stroke-width="1"/>
+  <text x="774" y="268" fill="#4a6a5d" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="9">NOTE</text>
+  <text x="774" y="284" fill="#8fb3a5" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="11">Idempotency required on validator and updater</text>
 
-    <rect x="440" y="250" width="160" height="44" fill="#140c0a" stroke="#e85d04" stroke-width="1.25"/>
-    <text x="450" y="268" fill="#e85d04" font-size="8">FAIL PATH</text>
-    <text x="450" y="282" fill="#8fb3a5" font-size="9">retry / escalate</text>
-  </g>
+  <path d="M550 448 V470" fill="none" stroke="#4a6a5d" marker-end="url(#arrow)"/>
 
-  <line x1="200" y1="272" x2="248" y2="272" stroke="#4a8c5c" marker-end="url(#arrow)"/>
-  <text x="210" y="266" fill="#4a6a5d" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="8">pass</text>
+  <!-- validator -->
+  <rect x="390" y="474" width="320" height="70" fill="#0f1f1a" stroke="#4a8c5c" stroke-width="1.5"/>
+  <text x="404" y="496" fill="#4a8c5c" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10">06 NEW SUB-AGENT (VALIDATOR)</text>
+  <text x="404" y="516" fill="#c5ddd2" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="12">Validates change against systems</text>
+  <text x="404" y="532" fill="#d4a017" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="11">MUST be idempotent  |  writes receipt</text>
 
-  <g font-family="IBM Plex Mono, ui-monospace, monospace">
-    <rect x="252" y="250" width="150" height="44" fill="#0f1f1a" stroke="#8a5a8a" stroke-width="1.25"/>
-    <text x="262" y="268" fill="#8a5a8a" font-size="8">08 APPLY</text>
-    <text x="262" y="282" fill="#8fb3a5" font-size="10">status = applied</text>
-  </g>
+  <!-- fail from validator -->
+  <path d="M710 509 H760 V426" fill="none" stroke="#e85d04" stroke-dasharray="4 3" marker-end="url(#arrow-fail)"/>
+  <text x="718" y="498" fill="#e85d04" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="9">FAIL</text>
 
-  <path d="M327 294 V310 H200" fill="none" stroke="#4a6a5d" marker-end="url(#arrow)"/>
+  <!-- pass to handoff -->
+  <path d="M550 544 V568" fill="none" stroke="#4a8c5c" marker-end="url(#arrow-ok)"/>
+  <text x="560" y="560" fill="#4a8c5c" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="9">PASS</text>
 
-  <g font-family="IBM Plex Mono, ui-monospace, monospace">
-    <rect x="40" y="310" width="320" height="36" fill="#0f1f1a" stroke="#d4a017" stroke-width="1.25"/>
-    <text x="50" y="325" fill="#d4a017" font-size="8">09 COMPLETE</text>
-    <text x="50" y="338" fill="#8fb3a5" font-size="10">context + history -&gt; completed + version++</text>
-  </g>
+  <!-- handoff -->
+  <rect x="390" y="572" width="320" height="52" fill="#0f1f1a" stroke="#8a5a8a" stroke-width="1.35"/>
+  <text x="404" y="593" fill="#8a5a8a" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10">07 HANDOFF</text>
+  <text x="404" y="611" fill="#c5ddd2" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="12">Hands validated info to Second Agent</text>
 
-  <path d="M360 328 H600 V62 H624" fill="none" stroke="#e85d04" stroke-width="1.25" stroke-dasharray="3 3" marker-end="url(#arrow-accent)"/>
-  <text x="456" y="318" fill="#e85d04" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="8">ONLY IF completed AND new version</text>
+  <path d="M710 598 H780" fill="none" stroke="#4a6a5d" marker-end="url(#arrow)"/>
+
+  <!-- second agent apply -->
+  <rect x="780" y="572" width="292" height="70" fill="#0f1f1a" stroke="#e85d04" stroke-width="1.5"/>
+  <text x="794" y="594" fill="#e85d04" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10">08 SECOND AGENT (APPLY)</text>
+  <text x="794" y="612" fill="#c5ddd2" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="12">Updates Railway and systems</text>
+  <text x="794" y="630" fill="#d4a017" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="11">sets status = applied</text>
+
+  <path d="M926 642 V670 H550 V688" fill="none" stroke="#4a6a5d" marker-end="url(#arrow)"/>
+
+  <!-- main agent complete / context -->
+  <rect x="300" y="692" width="500" height="70" fill="#0f1f1a" stroke="#3a7a8c" stroke-width="1.5"/>
+  <text x="314" y="714" fill="#3a7a8c" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10">09 MAIN / FIRST AGENT</text>
+  <text x="314" y="732" fill="#c5ddd2" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="12">Validates outcome + creates Custom MD / Context</text>
+  <text x="314" y="748" fill="#8fb3a5" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="11">remembers steps and iterating changes</text>
+
+  <path d="M550 762 V782" fill="none" stroke="#4a6a5d" marker-end="url(#arrow)"/>
+
+  <!-- history / completed -->
+  <rect x="300" y="786" width="500" height="70" fill="#0f1f1a" stroke="#d4a017" stroke-width="1.5"/>
+  <text x="314" y="808" fill="#d4a017" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10">10 HISTORY REPORT</text>
+  <text x="314" y="826" fill="#c5ddd2" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="12">Updates history report in DB</text>
+  <text x="314" y="842" fill="#e85d04" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="11">sets status = completed + new version</text>
+
+  <!-- loop prevention callout -->
+  <rect x="28" y="474" width="300" height="86" fill="#0f1f1a" stroke="#4a6a5d" stroke-width="1.25"/>
+  <text x="42" y="496" fill="#4a6a5d" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10">LOOP PREVENTION</text>
+  <text x="42" y="516" fill="#c5ddd2" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="12">version check</text>
+  <text x="42" y="534" fill="#c5ddd2" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="12">status guard</text>
+  <text x="42" y="552" fill="#c5ddd2" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="12">debounce lock</text>
+  <path d="M328 517 H390" fill="none" stroke="#4a6a5d" stroke-dasharray="3 3" marker-end="url(#arrow)"/>
+
+  <!-- loop control back -->
+  <path d="M800 821 H1060 V119 H740" fill="none" stroke="#e85d04" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arrow-accent)" filter="url(#glow)"/>
+  <rect x="860" y="450" width="200" height="52" fill="#0a1612" stroke="#e85d04" stroke-width="1"/>
+  <text x="960" y="470" text-anchor="middle" fill="#e85d04" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10">LOOP CONTROL</text>
+  <text x="960" y="488" text-anchor="middle" fill="#c5ddd2" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10">only if completed</text>
+  <text x="960" y="502" text-anchor="middle" fill="#c5ddd2" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10">AND new version</text>
+
+  <!-- footer legend -->
+  <text x="28" y="920" fill="#4a6a5d" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10">LEGEND</text>
+  <rect x="28" y="932" width="14" height="14" fill="#0f1f1a" stroke="#3a7a8c"/>
+  <text x="48" y="943" fill="#8fb3a5" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10">main agent</text>
+  <rect x="140" y="932" width="14" height="14" fill="#0f1f1a" stroke="#4a8c5c"/>
+  <text x="160" y="943" fill="#8fb3a5" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10">entry / validate</text>
+  <rect x="290" y="932" width="14" height="14" fill="#0f1f1a" stroke="#8a5a8a"/>
+  <text x="310" y="943" fill="#8fb3a5" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10">ingress / handoff</text>
+  <rect x="450" y="932" width="14" height="14" fill="#0f1f1a" stroke="#e85d04"/>
+  <text x="470" y="943" fill="#8fb3a5" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10">route / apply / fail</text>
+  <rect x="640" y="932" width="14" height="14" fill="#0f1f1a" stroke="#d4a017"/>
+  <text x="660" y="943" fill="#8fb3a5" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10">status / history</text>
+
+  <text x="28" y="966" fill="#4a6a5d" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10">Re-enter main loop only when status = completed AND a new version is detected.</text>
 </svg>
