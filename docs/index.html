@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>EBFlow — Agents that don’t eat themselves</title>
+    <meta
+      name="description"
+      content="EBFlow is a portable skill for multi-agent systems with a Railway/DB feedback loop, status machine, version gates, and loop prevention."
+    />
+    <meta property="og:title" content="EBFlow" />
+    <meta
+      property="og:description"
+      content="Production-ready multi-agent workflow with status, versions, and a hard stop on recursion."
+    />
+    <meta
+      property="og:image"
+      content="https://ezra-black.github.io/EB-Flow/assets/workflow.svg"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <base href="/EB-Flow/" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <div class="atmosphere" aria-hidden="true"></div>
+
+    <header class="hero">
+      <div class="hero-copy reveal">
+        <p class="brand">EBFlow</p>
+        <h1>Multi-agent work with a kill switch for recursion.</h1>
+        <p class="lede">
+          A portable skill for Railway/DB feedback loops: status, versions,
+          idempotent validation, and agents that stop when they should.
+        </p>
+        <div class="cta">
+          <a class="btn primary" href="https://github.com/Ezra-Black/EB-Flow"
+            >View on GitHub</a
+          >
+          <button class="btn ghost" type="button" data-copy>
+            Copy install prompt
+          </button>
+        </div>
+      </div>
+      <figure class="hero-diagram reveal">
+        <img
+          src="assets/workflow.svg"
+          alt="EBFlow workflow: pending through completed with validate, apply, and loop control"
+          width="640"
+          height="360"
+          decoding="async"
+        />
+        <figcaption>Status machine loop · compact control plane</figcaption>
+      </figure>
+    </header>
+
+    <main id="main">
+      <section class="tagline" id="tagline" aria-label="Tagline">
+        <p class="tagline-line" data-word-reveal>
+          Agents can wake often.
+          They do not get to act every time.
+        </p>
+      </section>
+
+      <section class="rule reveal" id="rule">
+        <h2>The rule</h2>
+        <p class="rule-line">
+          Only continue if <code>status = completed</code>
+          <span class="amp">and</span> a new version is detected.
+        </p>
+        <p class="muted">
+          Version check + status guard + debounce lock. That is the whole
+          control plane.
+        </p>
+      </section>
+
+      <section class="machine reveal" id="status">
+        <h2>Status machine</h2>
+        <ol class="status-track" aria-label="Status progression">
+          <li>pending</li>
+          <li>processing</li>
+          <li>validated</li>
+          <li>applied</li>
+          <li>completed</li>
+        </ol>
+        <p class="muted">
+          Failure path: <code>failed</code> → retry with backoff →
+          <code>escalated</code> to a human.
+        </p>
+      </section>
+
+      <section class="loop reveal" id="loop">
+        <h2>How the loop works</h2>
+        <ol class="steps">
+          <li>
+            <span class="step-body"
+              >Main Agent receives a task / domain / project</span
+            >
+          </li>
+          <li>
+            <span class="step-body">Users hit a website or API</span>
+          </li>
+          <li>
+            <span class="step-body"
+              >Request lands in the DB as
+              <code>pending</code> + <code>version</code></span
+            >
+          </li>
+          <li>
+            <span class="step-body"
+              >DB/Railway event wakes a Sub-Agent</span
+            >
+          </li>
+          <li>
+            <span class="step-body"
+              >Sub-Agent checks version + status (stops if stale)</span
+            >
+          </li>
+          <li>
+            <span class="step-body"
+              >Route Layer chooses CRUD or API</span
+            >
+          </li>
+          <li>
+            <span class="step-body"
+              >Validator runs (must be idempotent)</span
+            >
+          </li>
+          <li>
+            <span class="step-body"
+              >Second Agent applies change → <code>applied</code></span
+            >
+          </li>
+          <li>
+            <span class="step-body"
+              >Main Agent writes context + history →
+              <code>completed</code> + version bump</span
+            >
+          </li>
+          <li>
+            <span class="step-body"
+              >Loop returns only on completed + new version</span
+            >
+          </li>
+        </ol>
+      </section>
+
+      <section class="benefits reveal" id="benefits">
+        <h2>What you get</h2>
+        <ul class="benefit-list">
+          <li>
+            <strong>No double apply</strong>
+            <span>Idempotency keys and apply receipts survive webhook retries.</span>
+          </li>
+          <li>
+            <strong>No half writes</strong>
+            <span>Validate and apply stay separate jobs with different risk.</span>
+          </li>
+          <li>
+            <strong>No self eating loops</strong>
+            <span>Re-entry needs completed status and a new version.</span>
+          </li>
+        </ul>
+      </section>
+
+      <section class="install reveal" id="install">
+        <h2>Install</h2>
+        <p class="muted">
+          Paste into Cursor, Claude Code, Codex, Gemini, or Grok:
+        </p>
+        <pre><code id="install-prompt">Install this skill globally: https://github.com/Ezra-Black/EB-Flow</code></pre>
+        <div class="cta">
+          <button class="btn primary" type="button" data-copy>
+            Copy install prompt
+          </button>
+          <a
+            class="btn ghost"
+            href="https://github.com/Ezra-Black/EB-Flow/tree/main/starters/railway-postgres"
+            >Open Railway starter</a
+          >
+        </div>
+        <p class="harness">
+          Guides:
+          <a href="https://github.com/Ezra-Black/EB-Flow/blob/main/adapters/cursor.md">Cursor</a>,
+          <a href="https://github.com/Ezra-Black/EB-Flow/blob/main/adapters/claude.md">Claude</a>,
+          <a href="https://github.com/Ezra-Black/EB-Flow/blob/main/adapters/codex.md">Codex</a>,
+          <a href="https://github.com/Ezra-Black/EB-Flow/blob/main/adapters/gemini.md">Gemini</a>,
+          <a href="https://github.com/Ezra-Black/EB-Flow/blob/main/adapters/grok.md">Grok</a>
+        </p>
+      </section>
+    </main>
+
+    <footer>
+      <p>
+        <span class="brand-inline">EBFlow</span>
+        · MIT ·
+        <a href="https://github.com/Ezra-Black/EB-Flow">GitHub</a>
+        ·
+        <a href="https://github.com/Ezra-Black/EB-Flow/blob/main/PRIVACY.md">Privacy</a>
+        ·
+        <a href="https://github.com/Ezra-Black/EB-Flow/blob/main/TERMS.md">Terms</a>
+      </p>
+      <p class="credit">
+        Colors inspired by
+        <a href="https://github.com/wongmjane/nerv-theme">NERV theme</a>
+        · motion ideas from
+        <a href="https://github.com/elayadesign/ai-design-skills">ai-design-skills</a>
+      </p>
+    </footer>
+
+    <div class="toast" hidden data-toast>Copied</div>
+    <script src="main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,12 @@
+.DS_Store
+dist/
+*.zip
+.env
+.env.*
+!.env.example
+__pycache__/
+*.pyc
+.venv/
+node_modules/
+context/ebflow/**
+!context/ebflow/.gitkeep

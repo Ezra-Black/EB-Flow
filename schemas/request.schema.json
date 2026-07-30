@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ebflow.dev/schemas/request.schema.json",
+  "title": "EBFlowRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "idempotency_key",
+    "version",
+    "status",
+    "payload",
+    "attempt_count",
+    "created_at",
+    "updated_at"
+  ],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "idempotency_key": { "type": "string", "minLength": 1 },
+    "version": { "type": "integer", "minimum": 1 },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "processing",
+        "validated",
+        "applied",
+        "completed",
+        "failed",
+        "escalated"
+      ]
+    },
+    "route": {
+      "type": ["string", "null"],
+      "enum": ["crud", "api", null]
+    },
+    "target": { "type": ["string", "null"] },
+    "payload": { "type": "object" },
+    "validation_receipt": {
+      "type": ["object", "null"],
+      "properties": {
+        "id": { "type": "string" },
+        "request_id": { "type": "string" },
+        "version": { "type": "integer" },
+        "idempotency_key": { "type": "string" },
+        "route": { "type": "string" },
+        "target": { "type": "string" },
+        "payload_hash": { "type": "string" },
+        "checks": { "type": "array", "items": { "type": "string" } },
+        "validator_id": { "type": "string" },
+        "created_at": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "id",
+        "request_id",
+        "version",
+        "payload_hash",
+        "created_at"
+      ]
+    },
+    "apply_receipt": {
+      "type": ["object", "null"],
+      "properties": {
+        "id": { "type": "string" },
+        "validation_receipt_id": { "type": "string" },
+        "external_ids": { "type": "object" },
+        "applier_id": { "type": "string" },
+        "created_at": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "validation_receipt_id", "created_at"]
+    },
+    "failure": {
+      "type": ["object", "null"],
+      "properties": {
+        "code": { "type": "string" },
+        "message": { "type": "string" },
+        "stage": {
+          "type": "string",
+          "enum": ["ingress", "route", "validate", "apply", "complete"]
+        },
+        "transient": { "type": "boolean" },
+        "at": { "type": "string", "format": "date-time" }
+      },
+      "required": ["code", "message", "stage", "transient", "at"]
+    },
+    "attempt_count": { "type": "integer", "minimum": 0 },
+    "next_retry_at": { "type": ["string", "null"], "format": "date-time" },
+    "debounce_until": { "type": ["string", "null"], "format": "date-time" },
+    "lock_owner": { "type": ["string", "null"] },
+    "context_path": { "type": ["string", "null"] },
+    "history_id": { "type": ["string", "null"] },
+    "created_at": { "type": "string", "format": "date-time" },
+    "updated_at": { "type": "string", "format": "date-time" }
+  }
+}

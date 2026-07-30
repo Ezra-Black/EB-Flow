@@ -1,0 +1,66 @@
+{
+  "$schema": "../../../schemas/config.schema.json",
+  "name": "ebflow",
+  "domain": "REPLACE: one-sentence job the main agent owns",
+  "success_definition": "REPLACE: what completed means in user terms",
+  "out_of_scope": [],
+  "entry": {
+    "channel": "website",
+    "auth_required": true,
+    "idempotency_key_source": "client_or_hash_of_canonical_payload"
+  },
+  "data": {
+    "database": "postgres",
+    "host": "railway",
+    "request_table": "ebflow_requests",
+    "history_table": "ebflow_history",
+    "context_dir": "context/ebflow"
+  },
+  "status_chain": [
+    "pending",
+    "processing",
+    "validated",
+    "applied",
+    "completed"
+  ],
+  "terminal_statuses": ["failed", "escalated"],
+  "version": {
+    "start": 1,
+    "bump_on": "completed",
+    "bumper": "main_agent"
+  },
+  "debounce_ms": 10000,
+  "validation": {
+    "idempotent": true,
+    "max_attempts": 4,
+    "backoff_seconds": [1, 5, 30, 120]
+  },
+  "escalation": {
+    "channel": "REPLACE: slack|email|linear|github",
+    "always_escalate": ["irreversible_money", "prod_delete", "authz_deny"]
+  },
+  "routes": [
+    {
+      "match": { "action": "example_create" },
+      "route": "crud",
+      "target": "REPLACE.table_or_collection",
+      "irreversible": false
+    },
+    {
+      "match": { "action": "example_api" },
+      "route": "api",
+      "target": "REPLACE.service.method",
+      "irreversible": true
+    }
+  ],
+  "runtimes": {
+    "main_agent": "cursor",
+    "ingress": "worker",
+    "validator": "worker",
+    "applier": "worker"
+  },
+  "loop_policy": {
+    "reenter_only_if_completed_and_new_version": true,
+    "auto_iterate_without_new_user_request": false
+  }
+}

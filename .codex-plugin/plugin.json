@@ -1,0 +1,44 @@
+{
+  "name": "ebflow",
+  "version": "1.0.0",
+  "description": "Production-ready multi-agent workflow with a DB/Railway feedback loop, status machine, version gates, and loop prevention.",
+  "author": {
+    "name": "Ezra Black",
+    "url": "https://github.com/Ezra-Black"
+  },
+  "homepage": "https://github.com/Ezra-Black/EB-Flow",
+  "repository": "https://github.com/Ezra-Black/EB-Flow",
+  "license": "MIT",
+  "keywords": [
+    "multi-agent",
+    "orchestration",
+    "status-machine",
+    "idempotency",
+    "railway",
+    "workflow"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "EBFlow",
+    "shortDescription": "Safe multi-agent DB feedback loops.",
+    "longDescription": "EBFlow is a portable skill for designing and operating production-ready multi-agent workflows. It uses a Railway/DB feedback loop with pending→completed status, version gates, idempotent validation, human escalation, and loop prevention so agents can touch live systems without becoming the failure mode.",
+    "developerName": "Ezra Black",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Discover",
+      "Scaffold",
+      "Operate",
+      "Eval"
+    ],
+    "websiteURL": "https://github.com/Ezra-Black/EB-Flow",
+    "privacyPolicyURL": "https://github.com/Ezra-Black/EB-Flow/blob/main/PRIVACY.md",
+    "termsOfServiceURL": "https://github.com/Ezra-Black/EB-Flow/blob/main/TERMS.md",
+    "defaultPrompt": [
+      "discover (domain / project)",
+      "scaffold from my discovery answers",
+      "operate request <id>",
+      "eval this design against eval.md"
+    ],
+    "brandColor": "#0F766E"
+  }
+}

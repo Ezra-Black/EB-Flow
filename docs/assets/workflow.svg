@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-labelledby="title desc">
+  <title id="title">EBFlow workflow</title>
+  <desc id="desc">Compact status-machine loop: pending through completed with validation, apply, and loop control.</desc>
+  <defs>
+    <pattern id="grid" width="16" height="16" patternUnits="userSpaceOnUse">
+      <path d="M16 0H0V16" fill="none" stroke="#4a6a5d" stroke-opacity="0.28" stroke-width="0.5"/>
+    </pattern>
+    <marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+      <path d="M0 0L6 3L0 6Z" fill="#4a6a5d"/>
+    </marker>
+    <marker id="arrow-accent" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+      <path d="M0 0L6 3L0 6Z" fill="#e85d04"/>
+    </marker>
+  </defs>
+
+  <rect width="640" height="360" fill="#0a1612"/>
+  <rect width="640" height="360" fill="url(#grid)"/>
+  <rect x="1" y="1" width="638" height="358" fill="none" stroke="#4a6a5d" stroke-opacity="0.55"/>
+
+  <text x="16" y="22" fill="#e85d04" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10" letter-spacing="1.5">EBFLOW // LOOP CONTROL</text>
+  <text x="624" y="22" text-anchor="end" fill="#4a6a5d" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="9">v + status + debounce</text>
+
+  <g font-family="IBM Plex Mono, ui-monospace, monospace">
+    <rect x="16" y="40" width="140" height="44" fill="#0f1f1a" stroke="#3a7a8c" stroke-width="1.25"/>
+    <text x="26" y="58" fill="#3a7a8c" font-size="8">01 MAIN</text>
+    <text x="26" y="72" fill="#8fb3a5" font-size="10">Task / Domain</text>
+
+    <line x1="156" y1="62" x2="178" y2="62" stroke="#4a6a5d" marker-end="url(#arrow)"/>
+
+    <rect x="184" y="40" width="140" height="44" fill="#0f1f1a" stroke="#4a8c5c" stroke-width="1.25"/>
+    <text x="194" y="58" fill="#4a8c5c" font-size="8">02 ENTRY</text>
+    <text x="194" y="72" fill="#8fb3a5" font-size="10">Users / Website</text>
+
+    <line x1="324" y1="62" x2="346" y2="62" stroke="#4a6a5d" marker-end="url(#arrow)"/>
+
+    <rect x="352" y="40" width="140" height="44" fill="#0f1f1a" stroke="#d4a017" stroke-width="1.25"/>
+    <text x="362" y="58" fill="#d4a017" font-size="8">03 DB WRITE</text>
+    <text x="362" y="72" fill="#8fb3a5" font-size="10">pending + version</text>
+
+    <line x1="492" y1="62" x2="514" y2="62" stroke="#4a6a5d" marker-end="url(#arrow)"/>
+
+    <rect x="520" y="40" width="104" height="44" fill="#0f1f1a" stroke="#8a5a8a" stroke-width="1.25"/>
+    <text x="530" y="58" fill="#8a5a8a" font-size="8">04 EVENT</text>
+    <text x="530" y="72" fill="#8fb3a5" font-size="10">wake agent</text>
+  </g>
+
+  <path d="M572 84 V110 H320 V120" fill="none" stroke="#4a6a5d" marker-end="url(#arrow)"/>
+
+  <g font-family="IBM Plex Mono, ui-monospace, monospace">
+    <rect x="200" y="120" width="240" height="44" fill="#0f1f1a" stroke="#8a5a8a" stroke-width="1.25"/>
+    <text x="210" y="138" fill="#8a5a8a" font-size="8">05 INGRESS GUARD</text>
+    <text x="210" y="152" fill="#8fb3a5" font-size="10">check version + status + lock</text>
+
+    <line x1="320" y1="164" x2="320" y2="182" stroke="#4a6a5d" marker-end="url(#arrow)"/>
+
+    <rect x="214" y="186" width="212" height="40" fill="#0f1f1a" stroke="#e85d04" stroke-width="1.25"/>
+    <text x="224" y="202" fill="#e85d04" font-size="8">06 ROUTE</text>
+    <text x="224" y="216" fill="#8fb3a5" font-size="10">CRUD system  |  API layer</text>
+  </g>
+
+  <path d="M260 226 V242 H120 V250" fill="none" stroke="#4a6a5d" marker-end="url(#arrow)"/>
+  <path d="M380 226 V242 H520 V250" fill="none" stroke="#4a6a5d" marker-end="url(#arrow)"/>
+
+  <g font-family="IBM Plex Mono, ui-monospace, monospace">
+    <rect x="40" y="250" width="160" height="44" fill="#0f1f1a" stroke="#4a8c5c" stroke-width="1.25"/>
+    <text x="50" y="268" fill="#4a8c5c" font-size="8">07 VALIDATE</text>
+    <text x="50" y="282" fill="#8fb3a5" font-size="10">idempotent check</text>
+
+    <rect x="440" y="250" width="160" height="44" fill="#140c0a" stroke="#e85d04" stroke-width="1.25"/>
+    <text x="450" y="268" fill="#e85d04" font-size="8">FAIL PATH</text>
+    <text x="450" y="282" fill="#8fb3a5" font-size="9">retry / escalate</text>
+  </g>
+
+  <line x1="200" y1="272" x2="248" y2="272" stroke="#4a8c5c" marker-end="url(#arrow)"/>
+  <text x="210" y="266" fill="#4a6a5d" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="8">pass</text>
+
+  <g font-family="IBM Plex Mono, ui-monospace, monospace">
+    <rect x="252" y="250" width="150" height="44" fill="#0f1f1a" stroke="#8a5a8a" stroke-width="1.25"/>
+    <text x="262" y="268" fill="#8a5a8a" font-size="8">08 APPLY</text>
+    <text x="262" y="282" fill="#8fb3a5" font-size="10">status = applied</text>
+  </g>
+
+  <path d="M327 294 V310 H200" fill="none" stroke="#4a6a5d" marker-end="url(#arrow)"/>
+
+  <g font-family="IBM Plex Mono, ui-monospace, monospace">
+    <rect x="40" y="310" width="320" height="36" fill="#0f1f1a" stroke="#d4a017" stroke-width="1.25"/>
+    <text x="50" y="325" fill="#d4a017" font-size="8">09 COMPLETE</text>
+    <text x="50" y="338" fill="#8fb3a5" font-size="10">context + history -&gt; completed + version++</text>
+  </g>
+
+  <path d="M360 328 H600 V62 H624" fill="none" stroke="#e85d04" stroke-width="1.25" stroke-dasharray="3 3" marker-end="url(#arrow-accent)"/>
+  <text x="456" y="318" fill="#e85d04" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="8">ONLY IF completed AND new version</text>
+</svg>

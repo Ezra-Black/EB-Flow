@@ -1,0 +1,4 @@
+interface:
+  display_name: "/ebflow"
+  short_description: "Build production multi-agent DB feedback loops with status, versions, and loop control."
+  default_prompt: "Use $ebflow to discover requirements, then scaffold a safe multi-agent workflow with status, version gates, and idempotent validation."

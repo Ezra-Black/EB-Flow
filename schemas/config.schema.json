@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ebflow.dev/schemas/config.schema.json",
+  "title": "EBFlowConfig",
+  "type": "object",
+  "required": ["name", "domain", "success_definition", "data", "debounce_ms", "loop_policy"],
+  "properties": {
+    "name": { "type": "string" },
+    "domain": { "type": "string" },
+    "success_definition": { "type": "string" },
+    "out_of_scope": { "type": "array", "items": { "type": "string" } },
+    "entry": { "type": "object" },
+    "data": { "type": "object" },
+    "status_chain": { "type": "array", "items": { "type": "string" } },
+    "terminal_statuses": { "type": "array", "items": { "type": "string" } },
+    "version": { "type": "object" },
+    "debounce_ms": { "type": "integer", "minimum": 0 },
+    "validation": { "type": "object" },
+    "escalation": { "type": "object" },
+    "routes": { "type": "array", "items": { "type": "object" } },
+    "runtimes": { "type": "object" },
+    "loop_policy": {
+      "type": "object",
+      "required": ["reenter_only_if_completed_and_new_version"],
+      "properties": {
+        "reenter_only_if_completed_and_new_version": { "type": "boolean", "const": true },
+        "auto_iterate_without_new_user_request": { "type": "boolean" }
+      }
+    }
+  }
+}

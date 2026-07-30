@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ebflow.dev/schemas/status.schema.json",
+  "title": "EBFlowStatusTransition",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["from", "to", "request_id", "version", "actor", "at"],
+  "properties": {
+    "request_id": { "type": "string" },
+    "version": { "type": "integer", "minimum": 1 },
+    "from": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "processing",
+        "validated",
+        "applied",
+        "completed",
+        "failed",
+        "escalated"
+      ]
+    },
+    "to": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "processing",
+        "validated",
+        "applied",
+        "completed",
+        "failed",
+        "escalated"
+      ]
+    },
+    "actor": {
+      "type": "string",
+      "enum": ["entry", "ingress", "validator", "applier", "main_agent", "human"]
+    },
+    "reason": { "type": "string" },
+    "at": { "type": "string", "format": "date-time" }
+  }
+}

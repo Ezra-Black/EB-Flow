@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ebflow.dev/schemas/history.schema.json",
+  "title": "EBFlowHistoryEntry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "request_id",
+    "version",
+    "summary",
+    "why",
+    "result",
+    "context_path",
+    "created_at"
+  ],
+  "properties": {
+    "id": { "type": "string" },
+    "request_id": { "type": "string" },
+    "version": { "type": "integer", "minimum": 1 },
+    "idempotency_key": { "type": "string" },
+    "route": { "type": ["string", "null"] },
+    "target": { "type": ["string", "null"] },
+    "summary": { "type": "string" },
+    "why": { "type": "string" },
+    "result": { "type": "string" },
+    "failures": { "type": "array", "items": { "type": "object" } },
+    "context_path": { "type": "string" },
+    "created_at": { "type": "string", "format": "date-time" }
+  }
+}
