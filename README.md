@@ -5,9 +5,11 @@
 
 ![EBFlow architecture flowchart](assets/architecture-flowchart.png)
 
-Production-ready multi-agent workflow skill: Railway/DB feedback loop with a status machine, version gates, idempotent validation, and loop prevention.
+**Install this before your agents eat themselves.**
 
-Agents interpret requests. EBFlow makes them operable against live systems without duplicate writes, silent half-applies, or self-triggering loops.
+Multi-agent demos talk. Production fails quieter: a webhook fires twice, a half-validated write sticks, a `completed` row wakes the same worker again. EBFlow is the skill you paste into Cursor, Claude, Codex, Gemini, or Grok so the agent builds a status machine, version gate, and debounce lock *before* it touches your DB.
+
+One install prompt. Schemas + Railway/Postgres starter included. The rule: only continue if `status = completed` **and** a new version shows up.
 
 ## The rule
 

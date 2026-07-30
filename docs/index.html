@@ -3,15 +3,15 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>EBFlow — Agents that don’t eat themselves</title>
+    <title>EBFlow — Install before your agents eat themselves</title>
     <meta
       name="description"
-      content="EBFlow is a portable skill for multi-agent systems with a Railway/DB feedback loop, status machine, version gates, and loop prevention."
+      content="Install EBFlow so multi-agent systems stop double-applying, half-writing, and re-triggering themselves. Status, version, and debounce for Cursor, Claude, Codex, Gemini, and Grok."
     />
     <meta property="og:title" content="EBFlow" />
     <meta
       property="og:description"
-      content="Production-ready multi-agent workflow with status, versions, and a hard stop on recursion."
+      content="Install this skill before your agents double-apply a webhook or loop on their own completed write."
     />
     <meta
       property="og:image"
@@ -33,18 +33,26 @@
     <header class="hero">
       <div class="hero-copy reveal">
         <p class="brand">EBFlow</p>
-        <h1>Multi-agent work with a kill switch for recursion.</h1>
+        <h1>Install this before your agents eat themselves.</h1>
         <p class="lede">
-          A portable skill for Railway/DB feedback loops: status, versions,
-          idempotent validation, and agents that stop when they should.
+          Multi-agent demos talk. Production fails quieter: a webhook fires
+          twice, a half-validated write sticks, a “completed” row wakes the
+          same worker again. EBFlow is the skill you paste into Cursor,
+          Claude, Codex, Gemini, or Grok so the agent builds a status machine,
+          version gate, and debounce lock before it touches your DB.
+        </p>
+        <p class="proof">
+          One install prompt. Schemas + Railway/Postgres starter included.
+          The rule: only continue if <code>completed</code> and a new version
+          shows up.
         </p>
         <div class="cta">
-          <a class="btn primary" href="https://github.com/Ezra-Black/EB-Flow"
-            >View on GitHub</a
-          >
-          <button class="btn ghost" type="button" data-copy>
+          <button class="btn primary" type="button" data-copy>
             Copy install prompt
           </button>
+          <a class="btn ghost" href="https://github.com/Ezra-Black/EB-Flow"
+            >View on GitHub</a
+          >
         </div>
       </div>
       <figure class="hero-diagram reveal">
@@ -64,8 +72,9 @@
     <main id="main">
       <section class="tagline" id="tagline" aria-label="Tagline">
         <p class="tagline-line" data-word-reveal>
-          Agents can wake often.
-          They do not get to act every time.
+          Copy the prompt.
+          Let the agent build the control plane.
+          Keep the loop from eating your data.
         </p>
       </section>
 
